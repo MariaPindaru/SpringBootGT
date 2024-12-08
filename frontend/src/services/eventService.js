@@ -20,3 +20,13 @@ export const createEvent = async (event) => {
         return null;
     }
 };
+
+export const getEventById = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/events/${id}`); 
+        return response.data;
+    } catch (error) {
+        console.error(`There was an error fetching the event with ID ${id}!`, error);
+        return null;
+    }
+};
