@@ -1,53 +1,54 @@
 package ro.gt.eventplatform.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.gt.eventplatform.model.Event;
 import ro.gt.eventplatform.service.EventService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
     private final EventService eventService;
 
+    @Autowired
     public EventController(EventService eventService) {
         this.eventService = eventService;
-    }
-
-    @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        Event createdEvent = eventService.createEvent(event);
-        return ResponseEntity.ok(createdEvent);
     }
 
     @GetMapping
     public ResponseEntity<List<Event>> getAllEvents() {
         List<Event> events = eventService.getAllEvents();
-        return ResponseEntity.ok(events);
+        if (events.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(events, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        Event createdEvent = eventService.createEvent(event);
+        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable String id) {
-        return eventService.getEventById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable String id, @RequestBody Event event) {
-        return eventService.updateEvent(id, event)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+        Optional<Event> event = Optional.ofNullable(eventService.getEventById(id));
+        return event.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable String id) {
-        if (eventService.deleteEvent(id)) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+        Event existingEvent = eventService.getEventById(id);
+        if (existingEvent != null) {
+            eventService.deleteEvent(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

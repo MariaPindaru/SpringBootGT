@@ -1,42 +1,34 @@
 package ro.gt.eventplatform.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.gt.eventplatform.model.Event;
+import ro.gt.eventplatform.repository.EventRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class EventService {
-    private final List<Event> events = new ArrayList<>();
+    private final EventRepository eventRepository;
 
-    public Event createEvent(Event event) {
-        event.setId(UUID.randomUUID().toString());
-        events.add(event);
-        return event;
+    @Autowired
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
     }
 
     public List<Event> getAllEvents() {
-        return new ArrayList<>(events);
+        return eventRepository.findAll();
     }
 
-    public Optional<Event> getEventById(String id) {
-        return events.stream().filter(event -> event.getId().equals(id)).findFirst();
+    public Event createEvent(Event event) {
+        return eventRepository.save(event);
     }
 
-    public Optional<Event> updateEvent(String id, Event updatedEvent) {
-        return getEventById(id).map(existingEvent -> {
-            existingEvent.setTitle(updatedEvent.getTitle());
-            existingEvent.setDescription(updatedEvent.getDescription());
-            existingEvent.setDateTime(updatedEvent.getDateTime());
-            existingEvent.setLocation(updatedEvent.getLocation());
-            return existingEvent;
-        });
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id).orElse(null);
     }
 
-    public boolean deleteEvent(String id) {
-        return events.removeIf(event -> event.getId().equals(id));
+    public void deleteEvent(Long id) {
+        eventRepository.deleteById(id);
     }
 }

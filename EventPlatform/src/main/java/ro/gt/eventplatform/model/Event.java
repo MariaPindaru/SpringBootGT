@@ -1,29 +1,31 @@
 package ro.gt.eventplatform.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Event {
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String title;
     private String description;
-    private LocalDateTime dateTime;
     private String location;
+    private LocalDateTime dateTime;
 
-    public Event() {}
+    // Getters and Setters
 
-    public Event(String id, String title, String description, LocalDateTime dateTime, String location) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.dateTime = dateTime;
-        this.location = location;
-    }
-
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,19 +45,19 @@ public class Event {
         this.description = description;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
     public String getLocation() {
         return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
