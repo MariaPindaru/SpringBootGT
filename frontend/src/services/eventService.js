@@ -30,3 +30,22 @@ export const getEventById = async (id) => {
         return null;
     }
 };
+
+export const deleteEvent = async (id) => {
+    try {
+        await axiosInstance.delete(`/events/${id}`); 
+    } catch (error) {
+        console.error(`There was an error deleting the event with ID ${id}!`, error);
+        throw error;
+    }
+};
+
+export const updateEvent = async (id, updatedEvent) => {
+    try {
+        const response = await axiosInstance.put(`/events/${id}`, updatedEvent); 
+        return response.data;
+    } catch (error) {
+        console.error(`There was an error updating the event with ID ${id}!`, error);
+        throw error; 
+    }
+};
