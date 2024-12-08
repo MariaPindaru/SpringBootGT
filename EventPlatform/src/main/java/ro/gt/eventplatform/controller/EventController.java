@@ -51,4 +51,20 @@ public class EventController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
+        Event existingEvent = eventService.getEventById(id);
+        if (existingEvent != null) {
+            existingEvent.setTitle(updatedEvent.getTitle());
+            existingEvent.setDescription(updatedEvent.getDescription());
+            existingEvent.setLocation(updatedEvent.getLocation());
+            existingEvent.setDateTime(updatedEvent.getDateTime());
+
+            Event savedEvent = eventService.createEvent(existingEvent);
+            return new ResponseEntity<>(savedEvent, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
