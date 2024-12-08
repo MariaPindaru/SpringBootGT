@@ -8,10 +8,15 @@ const Home = () => {
     navigate('/events'); 
   };
 
+  const addEvent = () => {
+    navigate('/add-event'); 
+  };
+
   return (
     <div>
       <h1>Welcome to the Event Management App</h1>
       <button onClick={goToEvents}>Go to Events</button> 
+      <button onClick={addEvent}>Add Event</button> 
     </div>
   );
 };
