@@ -1,11 +1,20 @@
 import React from "react";
-import EventList from "./components/EventList";  
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import EventList from "./components/EventList";
+import Home from "./components/Home";
 
 function App() {
   return (
-    <div className="App">
-      <EventList />  
-    </div>
+    <BrowserRouter>
+      {/* <Header /> */}
+      <Routes>
+        <Route path='/' element={<Home />} />
+
+        <Route path='/events' element={<EventList />} />
+      </Routes>
+      {/* <Footer /> */}
+
+    </BrowserRouter>
   );
 }
 
