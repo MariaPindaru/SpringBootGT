@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getEventById, updateEvent } from "../services/eventService";
+import { getEventById, updateEvent, createEvent } from "../services/eventService";
 
-const EditEvent = () => {
-    const { id } = useParams();
+const EventForm = () => {
+    const { id } = useParams(); 
     const navigate = useNavigate();
     const [event, setEvent] = useState({
         title: "",
@@ -11,21 +11,22 @@ const EditEvent = () => {
         dateTime: "",
         location: "",
     });
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!!id); 
 
     useEffect(() => {
-        const fetchEvent = async () => {
-            try {
-                const eventData = await getEventById(id);
-                setEvent(eventData);
-            } catch (error) {
-                console.error("Error fetching event details:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchEvent();
+        if (id) {
+            const fetchEvent = async () => {
+                try {
+                    const eventData = await getEventById(id);
+                    setEvent(eventData);
+                } catch (error) {
+                    console.error("Error fetching event details:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            fetchEvent();
+        }
     }, [id]);
 
     const handleChange = (e) => {
@@ -35,12 +36,18 @@ const EditEvent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateEvent(id, event); // Update event details
-            alert("Event updated successfully!");
-            navigate(`/event/${id}`); // Redirect to the event details page
+            if (id) {
+                await updateEvent(id, event);
+                alert("Event updated successfully!");
+                navigate(`/event/${id}`);
+            } else {
+                const newEvent = await createEvent(event);
+                alert("Event created successfully!");
+                navigate(`/event/${newEvent.id}`);
+            }
         } catch (error) {
-            console.error("Error updating event:", error);
-            alert("Failed to update the event. Please try again.");
+            console.error("Error submitting the form:", error);
+            alert("An error occurred. Please try again.");
         }
     };
 
@@ -70,7 +77,7 @@ const EditEvent = () => {
                     marginBottom: "20px",
                 }}
             >
-                Edit Event
+                {id ? "Edit Event" : "Add New Event"}
             </h1>
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: "15px" }}>
@@ -139,7 +146,7 @@ const EditEvent = () => {
                     <input
                         type="datetime-local"
                         name="dateTime"
-                        value={new Date(event.dateTime).toISOString().slice(0, -1)}
+                        value={event.dateTime ? new Date(event.dateTime).toISOString().slice(0, -1) : ""}
                         onChange={handleChange}
                         required
                         style={{
@@ -191,11 +198,11 @@ const EditEvent = () => {
                         fontWeight: "bold",
                     }}
                 >
-                    Save Changes
+                    {id ? "Save Changes" : "Create Event"}
                 </button>
             </form>
         </div>
     );
 };
 
-export default EditEvent;
+export default EventForm;
