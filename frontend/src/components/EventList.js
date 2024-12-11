@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllEvents } from "../services/eventService";
+import EventCard from "./eventCard/EventCard";
 
 const EventList = () => {
     const [events, setEvents] = useState([]);  
@@ -29,20 +30,11 @@ const EventList = () => {
 
     return (
         <div>
-            <h1>Event List</h1>
-            <ul>
+        <h1 style={{ textAlign: "center" }}>Event List</h1>
+        <ul>
                 {events.length > 0 ? (
                     events.map((event) => (
-                        <li
-                            key={event.id}
-                            onClick={() => handleEventClick(event.id)}
-                            style={{ cursor: "pointer", marginBottom: "20px" }} 
-                        >
-                            <h2>{event.title}</h2>
-                            <p>{event.description}</p>
-                            <p><strong>Date:</strong> {new Date(event.dateTime).toLocaleString()}</p>
-                            <p><strong>Location:</strong> {event.location}</p>
-                        </li>
+                        <EventCard key={event.id} event={event} onEventClick={handleEventClick} />
                     ))
                 ) : (
                     <p>No events available</p>

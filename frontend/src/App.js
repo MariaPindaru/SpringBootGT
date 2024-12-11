@@ -5,11 +5,12 @@ import AddEvent from "./components/AddEvent";
 import EventDetails from "./components/EventDetails";
 import EditEvent from "./components/EditEvent";
 import Home from "./components/Home";
+import Header from "./components/Header";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* <Header /> */}
+      <Header /> 
       <Routes>
         <Route path='/' element={<Home />} />
 

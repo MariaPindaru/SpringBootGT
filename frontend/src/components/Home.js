@@ -1,23 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
 
 const Home = () => {
-  const navigate = useNavigate(); 
-
-  const goToEvents = () => {
-    navigate('/events'); 
-  };
-
-  const addEvent = () => {
-    navigate('/add-event'); 
-  };
-
+  const role = "Admin";
   return (
-    <div>
-      <h1>Welcome to the Event Management App</h1>
-      <button onClick={goToEvents}>Go to Events</button> 
-      <button onClick={addEvent}>Add Event</button> 
-    </div>
+      <div style={{ textAlign: "center", marginTop: "50px", fontSize: "20px" }}>
+          <p>You are logged in as <strong>{role}</strong>.</p>
+      </div>
   );
 };
 

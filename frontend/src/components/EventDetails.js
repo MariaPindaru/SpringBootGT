@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getEventById, deleteEvent } from "../services/eventService";
 
 const EventDetails = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -24,21 +24,13 @@ const EventDetails = () => {
         fetchEvent();
     }, [id]);
 
-    if (loading) {
-        return <div>Loading event details...</div>;
-    }
-
-    if (!event) {
-        return <div>Event not found</div>;
-    }
-
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this event?");
         if (confirmDelete) {
             try {
                 await deleteEvent(id); 
                 alert("Event deleted successfully!");
-                navigate("/"); 
+                navigate("/");
             } catch (error) {
                 console.error("Error deleting event:", error);
                 alert("Failed to delete the event. Please try again.");
@@ -47,7 +39,7 @@ const EventDetails = () => {
     };
 
     const handleEdit = () => {
-        navigate(`/edit-event/${id}`); 
+        navigate(`/edit-event/${id}`);
     };
 
     if (loading) {
@@ -59,19 +51,73 @@ const EventDetails = () => {
     }
 
     return (
-        <div>
-            <h1>{event.title}</h1>
-            <p>{event.description}</p>
-            <p><strong>Date:</strong> {new Date(event.dateTime).toLocaleString()}</p>
-            <p><strong>Location:</strong> {event.location}</p>
-            <button onClick={handleEdit} style={{ marginRight: "10px" }}>
-                Edit Event
-            </button>
-            <button onClick={handleDelete} style={{ backgroundColor: "red", color: "white" }}>
-                Delete Event
-            </button>
+        <div
+            style={{
+                maxWidth: "600px",
+                margin: "40px auto",
+                padding: "20px",
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                backgroundColor: "#fff",
+            }}
+        >
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "16px",
+                }}
+            >
+                <h1 style={{ margin: "0", color: "#333" }}>{event.title}</h1>
+            </div>
+            <p style={{ color: "#555", marginBottom: "16px" }}>{event.description}</p>
+            <p style={{ margin: "0 0 8px", color: "#777" }}>
+                <strong>Date:</strong> {new Date(event.dateTime).toLocaleString()}
+            </p>
+            <p style={{ margin: "0 0 16px", color: "#777" }}>
+                <strong>Location:</strong> {event.location}
+            </p>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: "10px",
+                }}
+            >
+                <button
+                    onClick={handleEdit}
+                    style={{
+                        padding: "10px 20px",
+                        backgroundColor: "#007BFF",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontSize: "16px",
+                    }}
+                >
+                    Edit Event
+                </button>
+                <button
+                    onClick={handleDelete}
+                    style={{
+                        padding: "10px 20px",
+                        backgroundColor: "#DC3545",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontSize: "16px",
+                    }}
+                >
+                    Delete Event
+                </button>
+            </div>
         </div>
     );
 };
 
 export default EventDetails;
+

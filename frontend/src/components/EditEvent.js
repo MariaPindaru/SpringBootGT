@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getEventById, updateEvent } from "../services/eventService";
 
 const EditEvent = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const navigate = useNavigate();
     const [event, setEvent] = useState({
         title: "",
@@ -45,53 +45,156 @@ const EditEvent = () => {
     };
 
     if (loading) {
-        return <div>Loading event details...</div>;
+        return (
+            <div style={{ textAlign: "center", marginTop: "50px", fontSize: "18px" }}>
+                Loading event details...
+            </div>
+        );
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h1>Edit Event</h1>
-            <div>
-                <label>Title:</label>
-                <input
-                    type="text"
-                    name="title"
-                    value={event.title}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Description:</label>
-                <textarea
-                    name="description"
-                    value={event.description}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Date & Time:</label>
-                <input
-                    type="datetime-local"
-                    name="dateTime"
-                    value={new Date(event.dateTime).toISOString().slice(0, -1)}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <div>
-                <label>Location:</label>
-                <input
-                    type="text"
-                    name="location"
-                    value={event.location}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-            <button type="submit">Save Changes</button>
-        </form>
+        <div
+            style={{
+                maxWidth: "600px",
+                margin: "50px auto",
+                padding: "20px",
+                backgroundColor: "#f9f9f9",
+                borderRadius: "8px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            }}
+        >
+            <h1
+                style={{
+                    textAlign: "center",
+                    color: "#007BFF",
+                    marginBottom: "20px",
+                }}
+            >
+                Edit Event
+            </h1>
+            <form onSubmit={handleSubmit}>
+                <div style={{ marginBottom: "15px" }}>
+                    <label
+                        style={{
+                            display: "block",
+                            marginBottom: "5px",
+                            fontWeight: "bold",
+                            color: "#333",
+                        }}
+                    >
+                        Title:
+                    </label>
+                    <input
+                        type="text"
+                        name="title"
+                        value={event.title}
+                        onChange={handleChange}
+                        required
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                            fontSize: "16px",
+                        }}
+                    />
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                    <label
+                        style={{
+                            display: "block",
+                            marginBottom: "5px",
+                            fontWeight: "bold",
+                            color: "#333",
+                        }}
+                    >
+                        Description:
+                    </label>
+                    <textarea
+                        name="description"
+                        value={event.description}
+                        onChange={handleChange}
+                        required
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                            fontSize: "16px",
+                            resize: "vertical",
+                        }}
+                    />
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                    <label
+                        style={{
+                            display: "block",
+                            marginBottom: "5px",
+                            fontWeight: "bold",
+                            color: "#333",
+                        }}
+                    >
+                        Date & Time:
+                    </label>
+                    <input
+                        type="datetime-local"
+                        name="dateTime"
+                        value={new Date(event.dateTime).toISOString().slice(0, -1)}
+                        onChange={handleChange}
+                        required
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                            fontSize: "16px",
+                        }}
+                    />
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                    <label
+                        style={{
+                            display: "block",
+                            marginBottom: "5px",
+                            fontWeight: "bold",
+                            color: "#333",
+                        }}
+                    >
+                        Location:
+                    </label>
+                    <input
+                        type="text"
+                        name="location"
+                        value={event.location}
+                        onChange={handleChange}
+                        required
+                        style={{
+                            width: "100%",
+                            padding: "10px",
+                            border: "1px solid #ccc",
+                            borderRadius: "4px",
+                            fontSize: "16px",
+                        }}
+                    />
+                </div>
+                <button
+                    type="submit"
+                    style={{
+                        width: "100%",
+                        padding: "12px",
+                        backgroundColor: "#007BFF",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        fontSize: "16px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Save Changes
+                </button>
+            </form>
+        </div>
     );
 };
 
