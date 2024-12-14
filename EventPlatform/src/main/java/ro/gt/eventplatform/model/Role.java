@@ -12,7 +12,7 @@ public class Role implements GrantedAuthority {
     @Id
     private String id;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private final List<Operation> allowedOperations = new ArrayList<>();
 
     public void setId(String id) {

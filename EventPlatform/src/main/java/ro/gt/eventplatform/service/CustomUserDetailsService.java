@@ -12,6 +12,7 @@ import ro.gt.eventplatform.repository.UserRepository;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -28,10 +29,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with username: "+ username));
 
-        Set<GrantedAuthority> authorities = user
-                .getRoles()
-                .stream()
-                .map((role) -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toSet());
+        Set<GrantedAuthority> authorities = user.getRoles().stream()
+                .flatMap(role -> role.getAllowedOperations().stream()
+                        .<GrantedAuthority>map(operation -> new SimpleGrantedAuthority(operation.getAuthority())))
+                .collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
                 user.getPassword(),

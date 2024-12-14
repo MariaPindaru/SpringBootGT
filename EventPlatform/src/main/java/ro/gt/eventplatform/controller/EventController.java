@@ -3,6 +3,7 @@ package ro.gt.eventplatform.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ro.gt.eventplatform.model.Event;
 import ro.gt.eventplatform.service.EventService;
@@ -30,6 +31,7 @@ public class EventController {
     }
 
     @PostMapping
+    @PreAuthorize("hasPermission(null, 'ADD_EVENT')")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
         Event createdEvent = eventService.createEvent(event);
         return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
@@ -42,6 +44,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasPermission(null, 'DELETE_EVENT')")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         Event existingEvent = eventService.getEventById(id);
         if (existingEvent != null) {
