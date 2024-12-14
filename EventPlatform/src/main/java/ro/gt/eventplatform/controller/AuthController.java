@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ro.gt.eventplatform.controller.DTO.LoginResultDTO;
 import ro.gt.eventplatform.security.JwtTokenProvider;
 import ro.gt.eventplatform.service.AuthService;
 
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> authenticateUser(HttpServletRequest request) {
+    public ResponseEntity<LoginResultDTO> authenticateUser(HttpServletRequest request) {
         try {
             String authorizationHeader = request.getHeader("Authorization");
 
@@ -43,12 +44,9 @@ public class AuthController {
                 String username = values[0];
                 String password = values[1];
 
-                String token = authService.login(username, password);
+                LoginResultDTO resultDTO = authService.login(username, password);
 
-                Map<String, String> response = new HashMap<>();
-                response.put("token", token);
-
-                return new ResponseEntity<>(response, HttpStatus.OK);
+                return new ResponseEntity<>(resultDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }

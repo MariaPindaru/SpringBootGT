@@ -16,17 +16,20 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ro.gt.eventplatform.security.CustomPermissionEvaluator;
 import ro.gt.eventplatform.security.JwtTokenFilter;
+import ro.gt.eventplatform.service.CustomUserDetailsService;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtTokenFilter jwtTokenFilter;
     private final CustomPermissionEvaluator customPermissionEvaluator;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter, CustomPermissionEvaluator customPermissionEvaluator) {
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, CustomPermissionEvaluator customPermissionEvaluator, CustomUserDetailsService customUserDetailsService) {
         this.jwtTokenFilter = jwtTokenFilter;
         this.customPermissionEvaluator = customPermissionEvaluator;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Bean
