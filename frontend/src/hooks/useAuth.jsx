@@ -5,13 +5,11 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+    const [role, setRole] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const login = async (authData) => {
         try {
-            console.log(authData.username);
-            console.log(authData.password);
-            
             setLoading(true);
             const response = await axiosInstance.post(
                 "/auth/login",
@@ -26,7 +24,9 @@ export const AuthProvider = ({ children }) => {
 
             if (response.status === 200) {
                 localStorage.setItem("token", response.data["token"]);
-                setIsLoggedIn(true); // Update the authentication state
+                localStorage.setItem("role", response.data['role']);
+
+                setIsLoggedIn(true); 
                 return true;
             }
         } catch (error) {
@@ -37,13 +37,17 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const getRole = () => {
+        return localStorage.getItem("role");
+    };
+
     const logout = () => {
         localStorage.removeItem("token");
         setIsLoggedIn(false);
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout, loading }}>
+        <AuthContext.Provider value={{ isLoggedIn, login, logout, loading, getRole }}>
             {children}
         </AuthContext.Provider>
     );
