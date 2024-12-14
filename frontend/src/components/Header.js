@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
-    const { isLoggedIn, logout } = useAuth();
+    const { isLoggedIn, logout, getRole } = useAuth();
     const navigate = useNavigate();
 
     const goToEvents = () => {
@@ -57,22 +57,23 @@ const Header = () => {
                         Go to Events
                     </button>
 
-                    <button
-                        onClick={addEvent}
-                        style={{
-                            marginRight: "10px",
-                            padding: "10px 15px",
-                            backgroundColor: "#fff",
-                            color: "#007BFF",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        Add event
-                    </button>
-
+                    {getRole() == "admin" ?
+                        <button
+                            onClick={addEvent}
+                            style={{
+                                marginRight: "10px",
+                                padding: "10px 15px",
+                                backgroundColor: "#fff",
+                                color: "#007BFF",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            Add event
+                        </button>
+                        : null}
                     <button
                         onClick={logoutEvent}
                         style={{

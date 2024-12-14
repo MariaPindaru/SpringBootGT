@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getEventById, deleteEvent } from "../services/eventService";
+import { useAuth } from "../hooks/useAuth";
 
 const EventDetails = () => {
     const { id } = useParams();
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const { getRole } = useAuth();
+
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-                const eventData = await getEventById(id); 
+                const eventData = await getEventById(id);
                 setEvent(eventData);
             } catch (error) {
                 console.error("Error fetching event details:", error);
@@ -28,7 +31,7 @@ const EventDetails = () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this event?");
         if (confirmDelete) {
             try {
-                await deleteEvent(id); 
+                await deleteEvent(id);
                 alert("Event deleted successfully!");
                 navigate("/");
             } catch (error) {
@@ -86,34 +89,59 @@ const EventDetails = () => {
                     gap: "10px",
                 }}
             >
-                <button
-                    onClick={handleEdit}
-                    style={{
-                        padding: "10px 20px",
-                        backgroundColor: "#007BFF",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                    }}
-                >
-                    Edit Event
-                </button>
-                <button
-                    onClick={handleDelete}
-                    style={{
-                        padding: "10px 20px",
-                        backgroundColor: "#DC3545",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                    }}
-                >
-                    Delete Event
-                </button>
+                {getRole() == "admin" ?
+                    <button
+                        onClick={handleEdit}
+                        style={{
+                            padding: "10px 20px",
+                            backgroundColor: "#007BFF",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "16px",
+                        }}
+                    >
+                        Edit Event
+                    </button>
+                    : null}
+
+                {getRole() == "admin" ?
+
+                    <button
+                        onClick={handleDelete}
+                        style={{
+                            padding: "10px 20px",
+                            backgroundColor: "#DC3545",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "16px",
+                        }}
+                    >
+                        Delete Event
+                    </button>
+                    : null}
+
+                {getRole() == "user" ?
+
+                    <button
+                        onClick={handleDelete}
+                        style={{
+                            padding: "10px 20px",
+                            backgroundColor: "#007BFF",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "16px",
+                        }}
+                    >
+                        Book Event
+                    </button>
+                    : null}
+
             </div>
         </div>
     );
