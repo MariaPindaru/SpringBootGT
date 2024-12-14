@@ -2,12 +2,10 @@ package ro.gt.eventplatform.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +15,9 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private final List<Role> roles = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Event> bookedEvents = new HashSet<>();
 
     public void setUsername(String username) {
         this.username = username;
@@ -40,5 +41,13 @@ public class User {
 
     public Collection<Role> getRoles() {
         return roles;
+    }
+
+    public Set<Event> getBookedEvents() {
+        return bookedEvents;
+    }
+
+    public void setBookedEvents(Set<Event> bookedEvents) {
+        this.bookedEvents = bookedEvents;
     }
 }

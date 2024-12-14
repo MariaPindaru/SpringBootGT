@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ro.gt.eventplatform.model.Event;
 import ro.gt.eventplatform.service.EventService;
@@ -56,6 +57,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasPermission(null, 'UPDATE_EVENT')")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
         Event existingEvent = eventService.getEventById(id);
         if (existingEvent != null) {
@@ -69,5 +71,13 @@ public class EventController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/book/{eventId}")
+    @PreAuthorize("hasPermission(null, 'BOOK_EVENT')")
+    public ResponseEntity<String> bookEvent(@PathVariable Long eventId, Authentication authentication) {
+        String username = authentication.getName();
+        eventService.bookEvent(eventId, username);
+        return ResponseEntity.ok("Event booked successfully");
     }
 }

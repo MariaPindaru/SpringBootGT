@@ -1,12 +1,10 @@
 package ro.gt.eventplatform.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Event {
@@ -19,7 +17,8 @@ public class Event {
     private String location;
     private LocalDateTime dateTime;
 
-    // Getters and Setters
+    @ManyToMany(mappedBy = "bookedEvents")
+    private Set<User> users = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -59,5 +58,13 @@ public class Event {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

@@ -39,18 +39,23 @@ public class DataSeeder {
             // operations
             Operation addEvent = new Operation();
             addEvent.setId("ADD_EVENT");
+            Operation updateEvent = new Operation();
+            updateEvent.setId("UPDATE_EVENT");
             Operation deleteEvent = new Operation();
             deleteEvent.setId("DELETE_EVENT");
-            operationRepository.saveAll(List.of(addEvent, deleteEvent));
+            Operation bookEvent = new Operation();
+            bookEvent.setId("BOOK_EVENT");
+            operationRepository.saveAll(List.of(addEvent, updateEvent, deleteEvent, bookEvent));
 
             // roles
             Role adminRole = new Role();
             adminRole.setId("ROLE_ADMIN");
-            adminRole.getAllowedOperations().addAll(List.of(addEvent, deleteEvent));
+            adminRole.getAllowedOperations().addAll(List.of(addEvent, updateEvent, deleteEvent));
             roleRepository.save(adminRole);
 
             Role userRole = new Role();
             userRole.setId("ROLE_USER");
+            userRole.getAllowedOperations().add(bookEvent);
             roleRepository.save(userRole);
 
             System.out.println("Seeded roles and operations successfully.");
