@@ -1,5 +1,6 @@
 package ro.gt.eventplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -16,7 +17,7 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private final List<Role> roles = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private Set<Event> bookedEvents = new HashSet<>();
 
     public void setUsername(String username) {

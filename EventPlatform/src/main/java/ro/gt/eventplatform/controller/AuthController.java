@@ -12,8 +12,6 @@ import ro.gt.eventplatform.security.JwtTokenProvider;
 import ro.gt.eventplatform.service.AuthService;
 
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -55,16 +53,4 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
-//        try{
-//            String token = authService.login(loginDto.getUsername(), loginDto.getPassword());
-//
-//            return new ResponseEntity<>(token, HttpStatus.OK);
-//
-//        }catch (Exception exception){
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        }
-//    }
 }

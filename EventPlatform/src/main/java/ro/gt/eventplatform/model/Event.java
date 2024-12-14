@@ -1,5 +1,6 @@
 package ro.gt.eventplatform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class Event {
     private LocalDateTime dateTime;
 
     @ManyToMany(mappedBy = "bookedEvents")
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public Long getId() {
