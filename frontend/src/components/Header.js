@@ -1,7 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
+    const { isLoggedIn, logout } = useAuth();
     const navigate = useNavigate();
 
     const goToEvents = () => {
@@ -10,6 +12,11 @@ const Header = () => {
 
     const addEvent = () => {
         navigate('/add-event');
+    };
+
+    const logoutEvent = () => {
+        logout();
+        navigate('/login');
     };
 
     return (
@@ -30,37 +37,60 @@ const Header = () => {
             <h1 style={{ margin: 0, cursor: "pointer" }} onClick={() => navigate('/')}>
                 Event Management App
             </h1>
-            <div>
-                <button
-                    onClick={goToEvents}
-                    style={{
-                        marginRight: "10px",
-                        padding: "10px 15px",
-                        backgroundColor: "#fff",
-                        color: "#007BFF",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                    }}
-                >
-                    Go to Events
-                </button>
-                <button
-                    onClick={addEvent}
-                    style={{
-                        padding: "10px 15px",
-                        backgroundColor: "#fff",
-                        color: "#007BFF",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                    }}
-                >
-                    Add Event
-                </button>
-            </div>
+
+            {isLoggedIn ?
+
+                <div>
+                    <button
+                        onClick={goToEvents}
+                        style={{
+                            marginRight: "10px",
+                            padding: "10px 15px",
+                            backgroundColor: "#fff",
+                            color: "#007BFF",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Go to Events
+                    </button>
+
+                    <button
+                        onClick={addEvent}
+                        style={{
+                            marginRight: "10px",
+                            padding: "10px 15px",
+                            backgroundColor: "#fff",
+                            color: "#007BFF",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Add event
+                    </button>
+
+                    <button
+                        onClick={logoutEvent}
+                        style={{
+                            marginRight: "10px",
+                            padding: "10px 15px",
+                            backgroundColor: "#fff",
+                            color: "#007BFF",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Logout
+                    </button>
+                </div>
+                :
+                null}
         </header>
     );
 };
