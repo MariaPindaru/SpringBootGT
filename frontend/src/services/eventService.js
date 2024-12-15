@@ -49,3 +49,13 @@ export const updateEvent = async (id, updatedEvent) => {
         throw error; 
     }
 };
+
+export const bookEvent = async (id,) => {
+    try {
+        const response = await axiosInstance.post(`/events/book/${id}`); 
+        return response.data;
+    } catch (error) {
+        console.error(`There was an error booking the event with ID ${id}!`, error);
+        throw error; 
+    }
+};

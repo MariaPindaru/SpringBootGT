@@ -1,7 +1,11 @@
 import React from "react";
 import Image from "../../assets/pngwing.com.png"
+import { useAuth } from "../../hooks/useAuth";
 
 const EventCard = ({ event, onEventClick }) => {
+
+    const { getRole } = useAuth();
+
     return (
         <div
             onClick={() => onEventClick(event.id)}
@@ -29,6 +33,12 @@ const EventCard = ({ event, onEventClick }) => {
                 <p style={{ margin: "0", color: "#777" }}>
                     <strong>Location:</strong> {event.location}
                 </p>
+
+                {getRole() == "user" ?
+                    <p style={{ margin: "12px 0 12px ", color: "#007BFF" }}>
+                        <strong>Status:</strong> {event.booked ? "Booked" : "Not booked"}
+                    </p>
+                    : null}
             </div>
             <img
                 src={Image}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getEventById, deleteEvent } from "../services/eventService";
+import { getEventById, deleteEvent, bookEvent } from "../services/eventService";
 import { useAuth } from "../hooks/useAuth";
 
 const EventDetails = () => {
@@ -45,6 +45,20 @@ const EventDetails = () => {
         navigate(`/edit-event/${id}`);
     };
 
+    const handleBooking = async() => {
+        const confirmBooking = window.confirm("Are you sure you want to book this event?");
+        if (confirmBooking) {
+            try {
+                await bookEvent(id);
+                alert("Event booked successfully!");
+                window.location.reload();
+            } catch (error) {
+                console.error("Error booking event:", error);
+                alert("Failed to book the event. Please try again.");
+            }
+        }
+    };
+
     if (loading) {
         return <div>Loading event details...</div>;
     }
@@ -82,6 +96,13 @@ const EventDetails = () => {
             <p style={{ margin: "0 0 16px", color: "#777" }}>
                 <strong>Location:</strong> {event.location}
             </p>
+
+            {getRole() == "user" && event.booked ?
+                <p style={{ margin: "0 0 16px", color: "#007BFF" }}>
+                    <strong>Status:</strong> Booked
+                </p>
+                : null}
+
             <div
                 style={{
                     display: "flex",
@@ -124,10 +145,10 @@ const EventDetails = () => {
                     </button>
                     : null}
 
-                {getRole() == "user" ?
+                {getRole() == "user" && !event.booked ?
 
                     <button
-                        onClick={handleDelete}
+                        onClick={handleBooking}
                         style={{
                             padding: "10px 20px",
                             backgroundColor: "#007BFF",
