@@ -1,6 +1,5 @@
 package ro.gt.eventplatform.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -17,7 +16,12 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private final List<Role> roles = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "users_booked_events",
+            joinColumns = @JoinColumn(name = "users_id"),
+            inverseJoinColumns = @JoinColumn(name = "booked_events_id")
+    )
     private Set<Event> bookedEvents = new HashSet<>();
 
     public void setUsername(String username) {

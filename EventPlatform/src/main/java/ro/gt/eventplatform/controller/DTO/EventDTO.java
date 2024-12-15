@@ -1,28 +1,14 @@
-package ro.gt.eventplatform.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+package ro.gt.eventplatform.controller.DTO;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-public class Event {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EventDTO {
     private Long id;
     private String title;
     private String description;
     private String location;
     private LocalDateTime dateTime;
-
-    @ManyToMany(mappedBy = "bookedEvents")
-    @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<User> users = new HashSet<>();
+    private boolean booked;
 
     public Long getId() {
         return id;
@@ -64,11 +50,11 @@ public class Event {
         this.dateTime = dateTime;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public boolean isBooked() {
+        return booked;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setBooked(boolean booked) {
+        this.booked = booked;
     }
 }
